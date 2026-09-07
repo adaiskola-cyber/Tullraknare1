@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tullräknare – räkna ut tull, moms och totalkostnad vid import</title>
+<meta name="description" content="Kalkylator för tull, moms och totalkostnad vid import till Sverige, enligt EU:s regler från 1 juli 2026." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="page">
+
+  <header class="site-header">
+    <h1>Tullräknare</h1>
+    <p class="lead">Räkna ut tull, moms och totalkostnad när du handlar från utlandet</p>
+  </header>
+
+  <main class="layout">
+
+    <!-- INMATNINGSKORT -->
+    <section class="card card--input" aria-label="Uppgifter om din vara">
+      <h2>Din vara</h2>
+      <form id="calc-form" autocomplete="off">
+
+        <div class="field">
+          <label for="value">Varans värde</label>
+          <input type="number" id="value" name="value" min="0" step="0.01" inputmode="decimal" placeholder="t.ex. 500" />
+        </div>
+
+        <div class="field">
+          <label for="currency-filter">Valuta <span class="hint">(gäller varuvärde och frakt)</span></label>
+          <input type="text" id="currency-filter" placeholder="Sök: kod, namn eller land…" autocomplete="off" aria-controls="currency" />
+          <select id="currency" name="currency" size="8"></select>
+          <p class="rates-status" id="rates-status" aria-live="polite">Hämtar valutakurser…</p>
+        </div>
+
+        <div class="field">
+          <label for="shipping">Fraktkostnad</label>
+          <input type="number" id="shipping" name="shipping" min="0" step="0.01" inputmode="decimal" placeholder="t.ex. 50" />
+        </div>
+
+        <div class="field">
+          <label for="duty-rate">Tullsats (%)</label>
+          <input type="number" id="duty-rate" name="dutyRate" min="0" step="0.1" inputmode="decimal" placeholder="t.ex. 4" />
+          <div class="quick-buttons" role="group" aria-label="Vanliga tullsatser">
+            <button type="button" class="quick-duty" data-percent="12">Kläder ~12%</button>
+            <button type="button" class="quick-duty" data-percent="4">Elektronik ~4%</button>
+            <button type="button" class="quick-duty" data-percent="2.7">Leksaker ~2,7%</button>
+            <button type="button" class="quick-duty" data-percent="0">Böcker 0%</button>
+          </div>
+        </div>
+
+        <p class="error-box" id="rates-error" hidden></p>
+      </form>
+    </section>
+
+    <!-- RESULTATKORT -->
+    <section class="card card--result" aria-label="Resultat">
+      <h2>Resultat</h2>
+
+      <dl class="result-list">
+        <div class="result-row">
+          <dt>Varuvärde i SEK</dt>
+          <dd id="result-value-sek">–</dd>
+        </div>
+        <div class="result-row">
+          <dt>Frakt i SEK</dt>
+          <dd id="result-shipping-sek">–</dd>
+        </div>
+        <div class="result-row">
+          <dt>Tullvärde (vara + frakt)</dt>
+          <dd id="result-customs-value">–</dd>
+        </div>
+        <div class="result-row">
+          <dt>Tullavgift</dt>
+          <dd id="result-duty">–</dd>
+        </div>
+        <div class="result-row">
+          <dt>Moms (25%)</dt>
+          <dd id="result-vat">–</dd>
+        </div>
+        <div class="result-row result-row--total">
+          <dt>Totalkostnad</dt>
+          <dd id="result-total">–</dd>
+        </div>
+      </dl>
+
+      <p class="rule-note" id="rule-note"></p>
+    </section>
+
+  </main>
+
+  <section class="info-panel">
+    <h2>Så räknar vi</h2>
+    <p>
+      Från 1 juli 2026 tog EU bort tullfriheten för varor under 150 EUR. Tullvärdet räknas som
+      varuvärde + frakt, omräknat till kronor. Om tullvärdet är högst 150 EUR tillämpas en
+      schablontull på max 3 EUR per varurad. Är tullvärdet högre än 150 EUR beräknas tullen som
+      din angivna tullsats i procent av tullvärdet. Moms på 25% läggs sedan på tullvärde + tull.
+    </p>
+    <p>
+      Exakta tullsatser för din varukategori hittar du i Tullverkets tulltaxa:
+      <a href="https://tulltaxan.tullverket.se" target="_blank" rel="noopener noreferrer">tulltaxan.tullverket.se</a>.
+    </p>
+    <p class="disclaimer">
+      Observera: detta är en uppskattning för att ge dig en fingervisning om kostnaden – inte ett
+      bindande tullbesked. Kontakta Tullverket för en exakt bedömning av just din försändelse.
+    </p>
+  </section>
+
+  <footer class="site-footer">
+    <p>Tullräknare · valutakurser från open.er-api.com</p>
+  </footer>
+
+</div>
+
+<script src="currencies.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
